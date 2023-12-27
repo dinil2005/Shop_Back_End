@@ -88,6 +88,23 @@ public class ItemAPI extends HttpServlet {
     }
 
 
+    String DELETE_ITEM = "DELETE FROM items WHERE itemId = ?";
+
+    @SneakyThrows
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Jsonb jsonb = JsonbBuilder.create();
+        ItemDTO itemDTO = jsonb.fromJson(req.getReader(),ItemDTO.class);
+
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ITEM);
+        preparedStatement.setString(1,itemDTO.getItemId());
+
+        if (preparedStatement.executeUpdate() !=0){
+            System.out.println("Item Delete");
+        }else{
+            System.out.println("Item Note Delete");
+        }
+    }
     //    String SEARCH_DATA = "SELECT * FROM Items WHERE itemId = ? ";
 //    @SneakyThrows
 //    @Override
